@@ -1,28 +1,38 @@
 import React, { useState } from "react";
 
 import "./App.css";
-import { PurchaseModal } from "./components/PurchaseModal";
+import { OrderModal } from "./components/OrderModal";
+import { PlantOrder } from "./types/PlantOrder";
 
 function App() {
-  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
-  const [plantPurchaseDetails, setPlantPurchaseDetails] = useState({});
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [plantOrderDetails, setPlantOrderDetails] = useState<Array<PlantOrder>>(
+    []
+  );
+  console.log(plantOrderDetails);
 
-  const closePurchaseModal = () => {
-    setShowPurchaseModal(false);
+  const closeOrderModal = () => {
+    setShowOrderModal(false);
   };
 
   return (
     <div className="App flex w-full flex-col">
-      <h1 className="text-5xl my-12">Plant Purchase Calculator</h1>
+      <h1 className="text-5xl my-12">Plant Calculator</h1>
 
       <button
         className="btn glass bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto"
-        onClick={() => setShowPurchaseModal(!showPurchaseModal)}
+        onClick={() => setShowOrderModal(!showOrderModal)}
       >
-        Define Plant Purchase
+        Define Plant Order
       </button>
 
-      {showPurchaseModal && <PurchaseModal closeModal={closePurchaseModal} />}
+      {showOrderModal && (
+        <OrderModal
+          closeModal={closeOrderModal}
+          plantOrderDetails={plantOrderDetails}
+          setPlantOrderDetails={setPlantOrderDetails}
+        />
+      )}
     </div>
   );
 }

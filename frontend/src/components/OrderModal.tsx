@@ -1,11 +1,72 @@
-import { MouseEventHandler } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { PlantOrder } from "../types/PlantOrder";
 
-interface PurchaseModalProps {
+interface OrderModalProps {
   closeModal: () => void;
+  plantOrderDetails: Array<PlantOrder>;
+  setPlantOrderDetails: Dispatch<SetStateAction<PlantOrder[]>>;
 }
 
-export const PurchaseModal = ({ closeModal }: PurchaseModalProps) => {
+export const OrderModal = ({
+  closeModal,
+  plantOrderDetails,
+  setPlantOrderDetails,
+}: OrderModalProps) => {
+  const nameRef = useRef<HTMLInputElement>(null);
+  const plantsRef = useRef<HTMLInputElement>(null);
+  const unitsRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
+
+  // Focus on name when modal opens
+  useEffect(() => {
+    if (nameRef && nameRef.current) {
+      nameRef.current.focus();
+    }
+  }, [nameRef]);
+
   const handleAddPlant = async () => {
+    // Remove whitespace of plant and make lowercase for storing
+    let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
+    let plantsPerUnit = Number(plantsRef!.current!.value);
+    let numberOfUnits = Number(unitsRef!.current!.value);
+    let pricePerUnit = Number(priceRef!.current!.value);
+    // Check if all fields are filled out correctly
+
+    if (!name || !plantsPerUnit || !numberOfUnits || !pricePerUnit) {
+      alert(
+        "Please enter all fields. Plants per Unit, Number of Units, and Price per Unit must be numbers."
+      );
+      return;
+    }
+
+    if (plantsPerUnit <= 0 || numberOfUnits <= 0 || pricePerUnit <= 0) {
+      alert(
+        "Plants per Unit, Number of Units, and Price per Unit must be greater than 0."
+      );
+      return;
+    }
+
+    if (!Number.isInteger(plantsPerUnit) || !Number.isInteger(numberOfUnits)) {
+      alert("Plants per Unit and Number of Units must be whole numbers.");
+      return;
+    }
+
+    // Round price
+    pricePerUnit = Number(pricePerUnit.toFixed(2));
+
+    const newPlantOrder = {
+      name: name,
+      plantsPerUnit,
+      numberOfUnits,
+      pricePerUnit,
+    };
+
+    const updatedOrderDetails = [...plantOrderDetails, newPlantOrder];
+    setPlantOrderDetails(updatedOrderDetails);
+
+    // set loading
+    // save to db
+    // end loading
     closeModal();
   };
 
@@ -20,6 +81,7 @@ export const PurchaseModal = ({ closeModal }: PurchaseModalProps) => {
             <span>Name</span>
             <input
               type="text"
+              ref={nameRef}
               placeholder="ie. Red Roses"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
@@ -33,6 +95,7 @@ export const PurchaseModal = ({ closeModal }: PurchaseModalProps) => {
             <span>Plants</span>
             <input
               type="text"
+              ref={plantsRef}
               placeholder="ie. 12"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
@@ -46,6 +109,7 @@ export const PurchaseModal = ({ closeModal }: PurchaseModalProps) => {
             <span>Units</span>
             <input
               type="text"
+              ref={unitsRef}
               placeholder="ie. 1"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
@@ -59,6 +123,7 @@ export const PurchaseModal = ({ closeModal }: PurchaseModalProps) => {
             <span>Price</span>
             <input
               type="text"
+              ref={priceRef}
               placeholder="ie. 80.00"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
