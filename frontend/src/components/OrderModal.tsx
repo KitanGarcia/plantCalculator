@@ -115,7 +115,7 @@ export const OrderModal = ({
             />
           </label>
         </div>
-        <div className="form-control mb-4 m-auto text-center">
+        <div className="form-control m-auto text-center">
           <label className="label">
             <span className="label-text text-white">Price per Unit ($)</span>
           </label>
@@ -129,7 +129,7 @@ export const OrderModal = ({
             />
           </label>
         </div>
-        <div className="flex mb-4 justify-between mx-2">
+        <div className="flex mb-4 mt-4 justify-between mx-2">
           <button
             className="btn hover:bg-red-600 glass w-1/5 bg-red-600 text-white"
             onClick={closeModal}
