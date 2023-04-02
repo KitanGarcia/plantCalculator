@@ -17,6 +17,10 @@ function App() {
     setShowOrderModal(false);
   };
 
+  const closeArrangementModal = () => {
+    setShowArrangementModal(false);
+  };
+
   return (
     <div className="App flex w-full flex-col">
       <h1 className="text-5xl my-12">Plant Calculator</h1>
@@ -42,7 +46,9 @@ function App() {
           setPlantOrderDetails={setPlantOrderDetails}
         />
       )}
-      {showArrangementModal && <ArrangementModal />}
+      {showArrangementModal && (
+        <ArrangementModal closeModal={closeArrangementModal} />
+      )}
     </div>
   );
 }

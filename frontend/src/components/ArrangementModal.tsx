@@ -2,7 +2,11 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Arrangement, Ingredient } from "../types/Arrangement";
 import { ArrangementRow } from "./ArrangementRow";
 
-export const ArrangementModal = () => {
+interface ArrangementModalProps {
+  closeModal: () => void;
+}
+
+export const ArrangementModal = ({ closeModal }: ArrangementModalProps) => {
   const [ingredients, setIngredients] = useState<Array<Ingredient>>([
     {
       plant: "",
@@ -23,7 +27,16 @@ export const ArrangementModal = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const ingredientList: Ingredient[] = [...ingredients];
-    const { name, value } = event.target;
+    let { name, value } = event.target;
+
+    // Remove whitespace of arrangement and make lowercase for storing
+    value = value.replace(/\s/g, "").toLowerCase();
+
+    // Round up quantity
+    // Assumes plant will never just be a number
+    if (Number(value)) {
+      value = `${Math.ceil(Number(value))}`;
+    }
 
     // Create copy of values and over-write name key with value
     const ingredientToUpdate = { ...ingredientList[index], [name]: value };
@@ -38,13 +51,49 @@ export const ArrangementModal = () => {
 
     // Check if an arrangement already exists
 
+    if (!name) {
+      alert("Arrangement must have a name.");
+      return;
+    }
+
+    const ingredientList = [...ingredients].filter(
+      (ingredient) =>
+        ingredient.plant && ingredient.quantity && ingredient.quantity > 0
+    );
+    console.log(ingredientList);
+
     // Make sure at least 1 ingredient has been added
+    if (ingredientList.length === 0) {
+      alert(
+        "Arrangement must have at least valid 1 ingredient with quantity > 0."
+      );
+      return;
+    }
+
+    const hasDuplicate = () => {
+      let plantNames = new Set();
+      for (let ingredient of ingredientList) {
+        if (plantNames.has(ingredient.plant)) {
+          return true;
+        }
+        plantNames.add(ingredient.plant);
+      }
+      console.log("plantNames", plantNames);
+    };
 
     // Check if plant has already been added
+    if (hasDuplicate()) {
+      alert("All plant names must be different.");
+      return;
+    }
 
-    // Check that number quantity is not 0
+    // Handle alert where name one field is blank and the other is not
 
-    // Filter ingredients to only use complete rows
+    // set loading
+    // set arrangements list state
+    // save to db
+    // end loading
+    closeModal();
   };
 
   // Create new row
@@ -82,7 +131,10 @@ export const ArrangementModal = () => {
           </button>
         </div>
         <div className="flex mb-4 justify-between mx-2">
-          <button className="btn hover:bg-red-600 glass w-1/5 bg-red-600 text-white">
+          <button
+            className="btn hover:bg-red-600 glass w-1/5 bg-red-600 text-white"
+            onClick={closeModal}
+          >
             Cancel
           </button>
           <button
