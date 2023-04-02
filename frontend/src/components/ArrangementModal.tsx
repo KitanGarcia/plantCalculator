@@ -1,9 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { PlantOrder } from "../types/PlantOrder";
+import { Arrangement, Ingredient } from "../types/Arrangement";
 import { ArrangementRow } from "./ArrangementRow";
 
 export const ArrangementModal = () => {
-  const [numRows, setNumRows] = useState(1);
+  const [ingredients, setIngredients] = useState<Array<Ingredient>>([
+    {
+      plant: "",
+      quantity: 0,
+    },
+  ]);
   const nameRef = useRef<HTMLInputElement>(null);
 
   // Focus on name when modal opens
@@ -13,14 +18,38 @@ export const ArrangementModal = () => {
     }
   }, [nameRef]);
 
+  const handleInputChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const ingredientList: Ingredient[] = [...ingredients];
+    const { name, value } = event.target;
+
+    // Create copy of values and over-write name key with value
+    const ingredientToUpdate = { ...ingredientList[index], [name]: value };
+    ingredientList[index] = ingredientToUpdate;
+    console.log(ingredientList);
+    setIngredients(ingredientList);
+  };
+
   const handleAddArrangement = async () => {
     // Remove whitespace of arrangement and make lowercase for storing
     let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
+
+    // Check if an arrangement already exists
+
+    // Make sure at least 1 ingredient has been added
+
+    // Check if plant has already been added
+
+    // Check that number quantity is not 0
+
+    // Filter ingredients to only use complete rows
   };
 
   // Create new row
   const handleAddRow = () => {
-    setNumRows(numRows + 1);
+    setIngredients([...ingredients, { plant: "", quantity: 0 }]);
   };
 
   return (
@@ -40,8 +69,8 @@ export const ArrangementModal = () => {
             />
           </label>
         </div>
-        {Array.from({ length: numRows }).map((row) => (
-          <ArrangementRow />
+        {ingredients.map((_, index) => (
+          <ArrangementRow index={index} handleInputChange={handleInputChange} />
         ))}
 
         <div>
@@ -60,7 +89,7 @@ export const ArrangementModal = () => {
             className="btn hover:bg-green-600 glass w-1/5 bg-green-600 text-white"
             onClick={handleAddArrangement}
           >
-            Add Plant
+            Add Arrangement
           </button>
         </div>
       </div>

@@ -30,6 +30,9 @@ export const OrderModal = ({
     let plantsPerUnit = Number(plantsRef!.current!.value);
     let numberOfUnits = Number(unitsRef!.current!.value);
     let pricePerUnit = Number(priceRef!.current!.value);
+
+    // Need to check if order already exists!
+
     // Check if all fields are filled out correctly
 
     if (!name || !plantsPerUnit || !numberOfUnits || !pricePerUnit) {

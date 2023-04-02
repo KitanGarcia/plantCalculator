@@ -1,7 +1,18 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { PlantOrder } from "../types/PlantOrder";
+import { Arrangement, Ingredient } from "../types/Arrangement";
 
-export const ArrangementRow = () => {
+interface ArrangementRowProps {
+  index: number;
+  handleInputChange: (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+}
+
+export const ArrangementRow = ({
+  index,
+  handleInputChange,
+}: ArrangementRowProps) => {
   return (
     <div className="flex justify-evenly mb-4">
       <div>
@@ -12,8 +23,10 @@ export const ArrangementRow = () => {
           <span>Plant</span>
           <input
             type="text"
+            name="plant"
             placeholder="ie. Red Rose"
             className="input w-[12rem] input-bordered focus:outline-none focus:border-blue-400"
+            onChange={(event) => handleInputChange(index, event)}
           />
         </label>
       </div>
@@ -25,8 +38,10 @@ export const ArrangementRow = () => {
           <span>Number</span>
           <input
             type="text"
+            name="quantity"
             placeholder="ie. 6"
             className="input w-[4rem] input-bordered focus:outline-none focus:border-blue-400"
+            onChange={(event) => handleInputChange(index, event)}
           />
         </label>
       </div>
