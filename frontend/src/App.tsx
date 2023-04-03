@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import "./App.css";
+import { ArrangementDisplay } from "./components/ArrangementDisplay";
 import { ArrangementModal } from "./components/ArrangementModal";
 import { OrderModal } from "./components/OrderModal";
 import { Arrangement } from "./types/Arrangement";
@@ -55,6 +56,9 @@ function App() {
           arrangements={arrangements}
           setArrangements={setArrangements}
         />
+      )}
+      {arrangements.length > 0 && (
+        <ArrangementDisplay arrangements={arrangements} />
       )}
     </div>
   );
