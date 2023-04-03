@@ -4,6 +4,6 @@ export type Arrangement = {
 };
 
 export type Ingredient = {
-  plant: string;
+  name: string;
   quantity: number;
 };

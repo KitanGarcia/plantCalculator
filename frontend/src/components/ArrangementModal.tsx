@@ -15,7 +15,7 @@ export const ArrangementModal = ({
 }: ArrangementModalProps) => {
   const [ingredients, setIngredients] = useState<Array<Ingredient>>([
     {
-      plant: "",
+      name: "",
       quantity: 0,
     },
   ]);
@@ -63,7 +63,7 @@ export const ArrangementModal = ({
 
     const ingredientList = [...ingredients].filter(
       (ingredient) =>
-        ingredient.plant && ingredient.quantity && ingredient.quantity > 0
+        ingredient.name && ingredient.quantity && ingredient.quantity > 0
     );
 
     // Make sure at least 1 ingredient has been added
@@ -77,10 +77,10 @@ export const ArrangementModal = ({
     const hasDuplicate = () => {
       let plantNames = new Set();
       for (let ingredient of ingredientList) {
-        if (plantNames.has(ingredient.plant)) {
+        if (plantNames.has(ingredient.name)) {
           return true;
         }
-        plantNames.add(ingredient.plant);
+        plantNames.add(ingredient.name);
       }
     };
 
@@ -107,7 +107,7 @@ export const ArrangementModal = ({
 
   // Create new row
   const handleAddRow = () => {
-    setIngredients([...ingredients, { plant: "", quantity: 0 }]);
+    setIngredients([...ingredients, { name: "", quantity: 0 }]);
   };
 
   return (

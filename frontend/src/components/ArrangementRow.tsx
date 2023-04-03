@@ -23,7 +23,7 @@ export const ArrangementRow = ({
           <span>Plant</span>
           <input
             type="text"
-            name="plant"
+            name="name"
             placeholder="ie. Red Rose"
             className="input w-[12rem] input-bordered focus:outline-none focus:border-blue-400"
             onChange={(event) => handleInputChange(index, event)}

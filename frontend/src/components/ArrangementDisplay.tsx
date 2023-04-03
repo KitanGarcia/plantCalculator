@@ -20,7 +20,7 @@ export const ArrangementDisplay = ({
                   {arrangement.name.toUpperCase()}
                 </h2>
                 {arrangement.ingredients.map((ingredient) => (
-                  <li className="list-item">{`${ingredient.quantity} ${ingredient.plant}`}</li>
+                  <li className="list-item">{`${ingredient.quantity} ${ingredient.name}`}</li>
                 ))}
               </ul>
             ))}
