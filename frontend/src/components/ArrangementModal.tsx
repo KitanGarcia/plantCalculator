@@ -4,9 +4,15 @@ import { ArrangementRow } from "./ArrangementRow";
 
 interface ArrangementModalProps {
   closeModal: () => void;
+  arrangements: Arrangement[];
+  setArrangements: Dispatch<SetStateAction<Arrangement[]>>;
 }
 
-export const ArrangementModal = ({ closeModal }: ArrangementModalProps) => {
+export const ArrangementModal = ({
+  closeModal,
+  arrangements,
+  setArrangements,
+}: ArrangementModalProps) => {
   const [ingredients, setIngredients] = useState<Array<Ingredient>>([
     {
       plant: "",
@@ -41,7 +47,6 @@ export const ArrangementModal = ({ closeModal }: ArrangementModalProps) => {
     // Create copy of values and over-write name key with value
     const ingredientToUpdate = { ...ingredientList[index], [name]: value };
     ingredientList[index] = ingredientToUpdate;
-    console.log(ingredientList);
     setIngredients(ingredientList);
   };
 
@@ -60,7 +65,6 @@ export const ArrangementModal = ({ closeModal }: ArrangementModalProps) => {
       (ingredient) =>
         ingredient.plant && ingredient.quantity && ingredient.quantity > 0
     );
-    console.log(ingredientList);
 
     // Make sure at least 1 ingredient has been added
     if (ingredientList.length === 0) {
@@ -78,7 +82,6 @@ export const ArrangementModal = ({ closeModal }: ArrangementModalProps) => {
         }
         plantNames.add(ingredient.plant);
       }
-      console.log("plantNames", plantNames);
     };
 
     // Check if plant has already been added
@@ -89,8 +92,14 @@ export const ArrangementModal = ({ closeModal }: ArrangementModalProps) => {
 
     // Handle alert where name one field is blank and the other is not
 
+    // Assemble arrangement
+    const arrangement: Arrangement = {
+      name,
+      ingredients: ingredientList,
+    };
+
+    setArrangements([...arrangements, arrangement]);
     // set loading
-    // set arrangements list state
     // save to db
     // end loading
     closeModal();

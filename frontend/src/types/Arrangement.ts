@@ -1,6 +1,6 @@
 export type Arrangement = {
   name: string;
-  plants: Ingredient[];
+  ingredients: Ingredient[];
 };
 
 export type Ingredient = {

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./App.css";
 import { ArrangementModal } from "./components/ArrangementModal";
 import { OrderModal } from "./components/OrderModal";
+import { Arrangement } from "./types/Arrangement";
 import { PlantOrder } from "./types/PlantOrder";
 
 function App() {
@@ -11,7 +12,9 @@ function App() {
   const [plantOrderDetails, setPlantOrderDetails] = useState<Array<PlantOrder>>(
     []
   );
-  console.log(plantOrderDetails);
+  const [arrangements, setArrangements] = useState<Array<Arrangement>>([]);
+  console.log("plant orders", plantOrderDetails);
+  console.log("arrangements", arrangements);
 
   const closeOrderModal = () => {
     setShowOrderModal(false);
@@ -47,7 +50,11 @@ function App() {
         />
       )}
       {showArrangementModal && (
-        <ArrangementModal closeModal={closeArrangementModal} />
+        <ArrangementModal
+          closeModal={closeArrangementModal}
+          arrangements={arrangements}
+          setArrangements={setArrangements}
+        />
       )}
     </div>
   );
