@@ -1,16 +1,16 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { PlantOrder } from "../types/PlantOrder";
+import { PlantOrder, PlantOrders } from "../types/PlantOrder";
 
 interface OrderModalProps {
   closeModal: () => void;
-  plantOrderDetails: Array<PlantOrder>;
-  setPlantOrderDetails: Dispatch<SetStateAction<PlantOrder[]>>;
+  plantOrders: PlantOrders;
+  setPlantOrders: Dispatch<SetStateAction<PlantOrders>>;
 }
 
 export const OrderModal = ({
   closeModal,
-  plantOrderDetails,
-  setPlantOrderDetails,
+  plantOrders,
+  setPlantOrders,
 }: OrderModalProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const plantsRef = useRef<HTMLInputElement>(null);
@@ -57,15 +57,15 @@ export const OrderModal = ({
     // Round price
     pricePerUnit = Number(pricePerUnit.toFixed(2));
 
-    const newPlantOrder = {
-      name: name,
+    const newPlantOrder: PlantOrder = {
       plantsPerUnit,
       numberOfUnits,
       pricePerUnit,
     };
 
-    const updatedOrderDetails = [...plantOrderDetails, newPlantOrder];
-    setPlantOrderDetails(updatedOrderDetails);
+    const updatedOrders = { ...plantOrders };
+    updatedOrders[name] = newPlantOrder;
+    setPlantOrders(updatedOrders);
 
     // set loading
     // save to db

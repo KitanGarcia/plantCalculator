@@ -5,16 +5,14 @@ import { ArrangementDisplay } from "./components/ArrangementDisplay";
 import { ArrangementModal } from "./components/ArrangementModal";
 import { OrderModal } from "./components/OrderModal";
 import { Arrangement } from "./types/Arrangement";
-import { PlantOrder } from "./types/PlantOrder";
+import { PlantOrders } from "./types/PlantOrder";
 
 function App() {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showArrangementModal, setShowArrangementModal] = useState(false);
-  const [plantOrderDetails, setPlantOrderDetails] = useState<Array<PlantOrder>>(
-    []
-  );
+  const [plantOrders, setPlantOrders] = useState<PlantOrders>({});
   const [arrangements, setArrangements] = useState<Array<Arrangement>>([]);
-  console.log("plant orders", plantOrderDetails);
+  console.log("plant orders", plantOrders);
   console.log("arrangements", arrangements);
 
   const closeOrderModal = () => {
@@ -23,6 +21,15 @@ function App() {
 
   const closeArrangementModal = () => {
     setShowArrangementModal(false);
+  };
+
+  const calculateCosts = () => {
+    if (!arrangements) {
+      alert("There are no arrangements defined");
+      return;
+    }
+
+    // Check if all arrangement ingredients are in PlantOrders
   };
 
   return (
@@ -46,8 +53,8 @@ function App() {
       {showOrderModal && (
         <OrderModal
           closeModal={closeOrderModal}
-          plantOrderDetails={plantOrderDetails}
-          setPlantOrderDetails={setPlantOrderDetails}
+          plantOrders={plantOrders}
+          setPlantOrders={setPlantOrders}
         />
       )}
       {showArrangementModal && (
