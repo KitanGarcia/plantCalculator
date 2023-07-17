@@ -4,6 +4,7 @@ import "./App.css";
 import { ArrangementDisplay } from "./components/ArrangementDisplay";
 import { ArrangementModal } from "./components/ArrangementModal";
 import { OrderModal } from "./components/OrderModal";
+import { ShoppingListDisplay } from "./components/ShoppingListDisplay";
 import { Arrangement } from "./types/Arrangement";
 import { PlantOrders } from "./types/PlantOrder";
 import { ShoppingList, ShoppingListItem } from "./types/ShoppingListItem";
@@ -122,6 +123,7 @@ function App() {
       {arrangements.length > 0 && (
         <ArrangementDisplay arrangements={arrangements} calculate={calculate} />
       )}
+      {shoppingList && <ShoppingListDisplay list={shoppingList} />}
     </div>
   );
 }

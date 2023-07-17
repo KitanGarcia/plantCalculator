@@ -14,7 +14,6 @@ export const OrderModal = ({
 }: OrderModalProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const plantsRef = useRef<HTMLInputElement>(null);
-  const unitsRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
 
   // Focus on name when modal opens
@@ -28,29 +27,26 @@ export const OrderModal = ({
     // Remove whitespace of plant and make lowercase for storing
     let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
     let plantsPerUnit = Number(plantsRef!.current!.value);
-    let numberOfUnits = Number(unitsRef!.current!.value);
     let pricePerUnit = Number(priceRef!.current!.value);
 
     // Need to check if order already exists!
 
     // Check if all fields are filled out correctly
 
-    if (!name || !plantsPerUnit || !numberOfUnits || !pricePerUnit) {
+    if (!name || !plantsPerUnit || !pricePerUnit) {
       alert(
-        "Please enter all fields. Plants per Unit, Number of Units, and Price per Unit must be numbers."
+        "Please enter all fields. Plants per Unit and Price per Unit must be numbers."
       );
       return;
     }
 
-    if (plantsPerUnit <= 0 || numberOfUnits <= 0 || pricePerUnit <= 0) {
-      alert(
-        "Plants per Unit, Number of Units, and Price per Unit must be greater than 0."
-      );
+    if (plantsPerUnit <= 0 || pricePerUnit <= 0) {
+      alert("Plants per Unit and Price per Unit must be greater than 0.");
       return;
     }
 
-    if (!Number.isInteger(plantsPerUnit) || !Number.isInteger(numberOfUnits)) {
-      alert("Plants per Unit and Number of Units must be whole numbers.");
+    if (!Number.isInteger(plantsPerUnit)) {
+      alert("Plants per Unit must be a whole number.");
       return;
     }
 
@@ -59,7 +55,6 @@ export const OrderModal = ({
 
     const newPlantOrder: PlantOrder = {
       plantsPerUnit,
-      numberOfUnits,
       pricePerUnit,
     };
 
@@ -100,20 +95,6 @@ export const OrderModal = ({
               type="text"
               ref={plantsRef}
               placeholder="ie. 12"
-              className="input input-bordered focus:outline-none focus:border-blue-400"
-            />
-          </label>
-        </div>
-        <div className="form-control mb-4 m-auto text-center">
-          <label className="label">
-            <span className="label-text text-white">Number of Units</span>
-          </label>
-          <label className="input-group">
-            <span>Units</span>
-            <input
-              type="text"
-              ref={unitsRef}
-              placeholder="ie. 1"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
           </label>
