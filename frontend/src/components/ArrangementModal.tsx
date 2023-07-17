@@ -128,7 +128,11 @@ export const ArrangementModal = ({
           </label>
         </div>
         {ingredients.map((_, index) => (
-          <ArrangementRow index={index} handleInputChange={handleInputChange} />
+          <ArrangementRow
+            key={index}
+            index={index}
+            handleInputChange={handleInputChange}
+          />
         ))}
 
         <div>
