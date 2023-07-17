@@ -1,12 +1,13 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Arrangement, Ingredient } from "../types/Arrangement";
 
 interface ArrangementDisplayProps {
   arrangements: Arrangement[];
+  calculate: () => void;
 }
 
 export const ArrangementDisplay = ({
   arrangements,
+  calculate,
 }: ArrangementDisplayProps) => {
   return (
     <div>
@@ -15,17 +16,23 @@ export const ArrangementDisplay = ({
         <div className="mt-4 mb-8 m-auto w-3/4">
           {arrangements &&
             arrangements.map((arrangement) => (
-              <ul className="list-disc text-left">
+              <ul key={arrangement.name} className="list-disc text-left">
                 <h2 className="mt-4 text-xl font-semibold">
                   {arrangement.name.toUpperCase()}
                 </h2>
-                {arrangement.ingredients.map((ingredient) => (
-                  <li className="list-item">{`${ingredient.quantity} ${ingredient.name}`}</li>
+                {arrangement.ingredients.map((ingredient, index) => (
+                  <li
+                    key={`${ingredient.name}_${index}`}
+                    className="list-item"
+                  >{`${ingredient.quantity} ${ingredient.name}`}</li>
                 ))}
               </ul>
             ))}
         </div>
-        <button className="btn glass my-8 bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto">
+        <button
+          className="btn glass my-8 bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto"
+          onClick={() => calculate()}
+        >
           Calculate!
         </button>
       </div>
