@@ -98,6 +98,10 @@ export const ArrangementModal = ({
       ingredients: ingredientList,
     };
 
+    localStorage.setItem(
+      "arrangements",
+      JSON.stringify([...arrangements, arrangement])
+    );
     setArrangements([...arrangements, arrangement]);
     // set loading
     // save to db

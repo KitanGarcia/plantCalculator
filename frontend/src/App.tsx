@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 import { ArrangementDisplay } from "./components/ArrangementDisplay";
@@ -17,6 +17,23 @@ function App() {
   const [shoppingList, setShoppingList] = useState<ShoppingList>({});
   console.log("plant orders", plantOrders);
   console.log("arrangements", arrangements);
+
+  useEffect(() => {
+    const savedArrangementsJson = localStorage.getItem("arrangements");
+    let savedArrangements: Arrangement[] = [];
+
+    if (savedArrangementsJson) {
+      try {
+        savedArrangements = JSON.parse(savedArrangementsJson) as Arrangement[];
+        setArrangements(savedArrangements);
+      } catch (error) {
+        console.error("Error parsing saved arrangements:", error);
+      }
+    }
+    if (savedArrangements) {
+      setArrangements(savedArrangements);
+    }
+  }, []);
 
   const closeOrderModal = () => {
     setShowOrderModal(false);
@@ -76,6 +93,7 @@ function App() {
         }
       }
     }
+
     console.log(newShoppingList);
     setShoppingList(newShoppingList);
 
