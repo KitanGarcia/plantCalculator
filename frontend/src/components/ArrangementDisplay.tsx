@@ -1,4 +1,4 @@
-import { Arrangement, Ingredient } from "../types/Arrangement";
+import { Arrangement } from "../types/Arrangement";
 
 interface ArrangementDisplayProps {
   arrangements: Arrangement[];
@@ -12,7 +12,7 @@ export const ArrangementDisplay = ({
   return (
     <div>
       <div className="w-[36rem] m-auto mt-8 menu rounded-box glass hover:bg-emerald-600 bg-emerald-600">
-        <h1 className="mt-8 text-3xl">List of Arrangements</h1>
+        <h1 className="mt-8 text-3xl">List of Recipes</h1>
         <div className="mt-4 mb-8 m-auto w-3/4">
           {arrangements &&
             arrangements.map((arrangement) => (

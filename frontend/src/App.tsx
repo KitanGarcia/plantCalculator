@@ -132,14 +132,14 @@ function App() {
         className="btn glass bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto"
         onClick={() => setShowOrderModal(!showOrderModal)}
       >
-        Define Plant Order
+        Define Flower Order
       </button>
 
       <button
         className="btn glass mt-8 bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto"
         onClick={() => setShowArrangementModal(!showArrangementModal)}
       >
-        Define Plant Arrangement
+        Define Floral Recipe
       </button>
 
       {showOrderModal && (

@@ -119,7 +119,7 @@ export const ArrangementModal = ({
       <div className="w-[36rem] m-auto mt-8 menu rounded-box glass hover:bg-pink-500 bg-pink-500">
         <div className="form-control mt-4 mb-4 m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Name of Arrangement</span>
+            <span className="label-text text-white">Name of Recipe</span>
           </label>
           <label className="input-group">
             <span>Name</span>
@@ -158,7 +158,7 @@ export const ArrangementModal = ({
             className="btn hover:bg-green-600 glass w-1/5 bg-green-600 text-white"
             onClick={handleAddArrangement}
           >
-            Add Arrangement
+            Add Recipe
           </button>
         </div>
       </div>

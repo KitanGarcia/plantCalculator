@@ -35,18 +35,18 @@ export const OrderModal = ({
 
     if (!name || !plantsPerUnit || !pricePerUnit) {
       alert(
-        "Please enter all fields. Plants per Unit and Price per Unit must be numbers."
+        "Please enter all fields. Flowers per Bunch and Price per Bunch must be numbers."
       );
       return;
     }
 
     if (plantsPerUnit <= 0 || pricePerUnit <= 0) {
-      alert("Plants per Unit and Price per Unit must be greater than 0.");
+      alert("Flowers per Bunch and Price per Bunch must be greater than 0.");
       return;
     }
 
     if (!Number.isInteger(plantsPerUnit)) {
-      alert("Plants per Unit must be a whole number.");
+      alert("Flowers per Bunch must be a whole number.");
       return;
     }
 
@@ -74,7 +74,7 @@ export const OrderModal = ({
       <div className="w-[36rem] m-auto mt-8 menu rounded-box glass hover:bg-pink-500 bg-pink-500">
         <div className="form-control mt-4 mb-4 m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Name of Plant</span>
+            <span className="label-text text-white">Name of Flower</span>
           </label>
           <label className="input-group">
             <span>Name</span>
@@ -88,10 +88,10 @@ export const OrderModal = ({
         </div>
         <div className="form-control mb-4 m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Plants per Unit</span>
+            <span className="label-text text-white">Flowers per Bunch</span>
           </label>
           <label className="input-group">
-            <span>Plants</span>
+            <span>Stems</span>
             <input
               type="text"
               ref={plantsRef}
@@ -102,7 +102,7 @@ export const OrderModal = ({
         </div>
         <div className="form-control m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Price per Unit ($)</span>
+            <span className="label-text text-white">Price per Bunch ($)</span>
           </label>
           <label className="input-group">
             <span>Price</span>
@@ -125,7 +125,7 @@ export const OrderModal = ({
             className="btn hover:bg-green-600 glass w-1/5 bg-green-600 text-white"
             onClick={handleAddPlant}
           >
-            Add Plant
+            Add Flower
           </button>
         </div>
       </div>
