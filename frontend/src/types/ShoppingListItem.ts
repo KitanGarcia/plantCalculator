@@ -1,8 +1,8 @@
 export type ShoppingListItem = {
   quantity: number;
-  plantsPerUnit: number;
-  pricePerUnit: number;
-  unitsToOrder: number;
+  flowersPerBunch: number;
+  pricePerBunch: number;
+  bunchesToOrder: number;
   totalCost: number;
 };
 

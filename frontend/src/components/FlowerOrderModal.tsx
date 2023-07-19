@@ -1,19 +1,19 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { PlantOrder, PlantOrders } from "../types/PlantOrder";
+import { FlowerOrder, FlowerOrders } from "../types/FlowerOrder";
 
 interface OrderModalProps {
   closeModal: () => void;
-  plantOrders: PlantOrders;
-  setPlantOrders: Dispatch<SetStateAction<PlantOrders>>;
+  flowerOrders: FlowerOrders;
+  setFlowerOrders: Dispatch<SetStateAction<FlowerOrders>>;
 }
 
 export const OrderModal = ({
   closeModal,
-  plantOrders,
-  setPlantOrders,
+  flowerOrders,
+  setFlowerOrders,
 }: OrderModalProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
-  const plantsRef = useRef<HTMLInputElement>(null);
+  const flowerRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
 
   // Focus on name when modal opens
@@ -26,42 +26,42 @@ export const OrderModal = ({
   const handleAddPlant = async () => {
     // Remove whitespace of plant and make lowercase for storing
     let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
-    let plantsPerUnit = Number(plantsRef!.current!.value);
-    let pricePerUnit = Number(priceRef!.current!.value);
+    let flowersPerBunch = Number(flowerRef!.current!.value);
+    let pricePerBunch = Number(priceRef!.current!.value);
 
     // Need to check if order already exists!
 
     // Check if all fields are filled out correctly
 
-    if (!name || !plantsPerUnit || !pricePerUnit) {
+    if (!name || !flowersPerBunch || !pricePerBunch) {
       alert(
         "Please enter all fields. Flowers per Bunch and Price per Bunch must be numbers."
       );
       return;
     }
 
-    if (plantsPerUnit <= 0 || pricePerUnit <= 0) {
+    if (flowersPerBunch <= 0 || pricePerBunch <= 0) {
       alert("Flowers per Bunch and Price per Bunch must be greater than 0.");
       return;
     }
 
-    if (!Number.isInteger(plantsPerUnit)) {
+    if (!Number.isInteger(flowersPerBunch)) {
       alert("Flowers per Bunch must be a whole number.");
       return;
     }
 
     // Round price
-    pricePerUnit = Number(pricePerUnit.toFixed(2));
+    pricePerBunch = Number(pricePerBunch.toFixed(2));
 
-    const newPlantOrder: PlantOrder = {
-      plantsPerUnit,
-      pricePerUnit,
+    const newFlowerOrder: FlowerOrder = {
+      flowersPerBunch,
+      pricePerBunch,
     };
 
-    const updatedOrders = { ...plantOrders };
-    updatedOrders[name] = newPlantOrder;
-    localStorage.setItem("plantOrders", JSON.stringify(updatedOrders));
-    setPlantOrders(updatedOrders);
+    const updatedOrders = { ...flowerOrders };
+    updatedOrders[name] = newFlowerOrder;
+    localStorage.setItem("flowerOrders", JSON.stringify(updatedOrders));
+    setFlowerOrders(updatedOrders);
 
     // set loading
     // save to db
@@ -81,7 +81,7 @@ export const OrderModal = ({
             <input
               type="text"
               ref={nameRef}
-              placeholder="ie. Red Roses"
+              placeholder="ie. Red Rose"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
           </label>
@@ -94,7 +94,7 @@ export const OrderModal = ({
             <span>Stems</span>
             <input
               type="text"
-              ref={plantsRef}
+              ref={flowerRef}
               placeholder="ie. 12"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />

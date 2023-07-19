@@ -1,4 +1,4 @@
-interface ArrangementRowProps {
+interface RecipeRowProps {
   index: number;
   handleInputChange: (
     index: number,
@@ -6,10 +6,7 @@ interface ArrangementRowProps {
   ) => void;
 }
 
-export const ArrangementRow = ({
-  index,
-  handleInputChange,
-}: ArrangementRowProps) => {
+export const RecipeRow = ({ index, handleInputChange }: RecipeRowProps) => {
   return (
     <div className="flex justify-evenly mb-4">
       <div>

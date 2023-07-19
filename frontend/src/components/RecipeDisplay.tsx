@@ -1,26 +1,23 @@
-import { Arrangement } from "../types/Arrangement";
+import { Recipe } from "../types/Recipe";
 
-interface ArrangementDisplayProps {
-  arrangements: Arrangement[];
+interface RecipeDisplayProps {
+  recipes: Recipe[];
   calculate: () => void;
 }
 
-export const ArrangementDisplay = ({
-  arrangements,
-  calculate,
-}: ArrangementDisplayProps) => {
+export const RecipeDisplay = ({ recipes, calculate }: RecipeDisplayProps) => {
   return (
     <div>
       <div className="w-[36rem] m-auto mt-8 menu rounded-box glass hover:bg-emerald-600 bg-emerald-600">
         <h1 className="mt-8 text-3xl">List of Recipes</h1>
         <div className="mt-4 mb-8 m-auto w-3/4">
-          {arrangements &&
-            arrangements.map((arrangement) => (
-              <ul key={arrangement.name} className="list-disc text-left">
+          {recipes &&
+            recipes.map((recipe) => (
+              <ul key={recipe.name} className="list-disc text-left">
                 <h2 className="mt-4 text-xl font-semibold">
-                  {arrangement.name.toUpperCase()}
+                  {recipe.name.toUpperCase()}
                 </h2>
-                {arrangement.ingredients.map((ingredient, index) => (
+                {recipe.ingredients.map((ingredient, index) => (
                   <li
                     key={`${ingredient.name}_${index}`}
                     className="list-item"

@@ -19,7 +19,7 @@ export const ShoppingListDisplay = ({ list }: ShoppingListDisplayProps) => {
               {Object.keys(list).map((item, index) => (
                 <li key={index}>
                   <p>{`${list[item].quantity} ${item} --- ${
-                    list[item].unitsToOrder
+                    list[item].bunchesToOrder
                   } order(s) --- $${list[item].totalCost.toFixed(2)}`}</p>
                 </li>
               ))}

@@ -1,18 +1,18 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Arrangement, Ingredient } from "../types/Arrangement";
-import { ArrangementRow } from "./ArrangementRow";
+import { Recipe, Ingredient } from "../types/Recipe";
+import { RecipeRow } from "./RecipeRow";
 
-interface ArrangementModalProps {
+interface RecipeModalProps {
   closeModal: () => void;
-  arrangements: Arrangement[];
-  setArrangements: Dispatch<SetStateAction<Arrangement[]>>;
+  recipes: Recipe[];
+  setRecipes: Dispatch<SetStateAction<Recipe[]>>;
 }
 
-export const ArrangementModal = ({
+export const RecipeModal = ({
   closeModal,
-  arrangements,
-  setArrangements,
-}: ArrangementModalProps) => {
+  recipes,
+  setRecipes,
+}: RecipeModalProps) => {
   const [ingredients, setIngredients] = useState<Array<Ingredient>>([
     {
       name: "",
@@ -35,7 +35,7 @@ export const ArrangementModal = ({
     const ingredientList: Ingredient[] = [...ingredients];
     let { name, value } = event.target;
 
-    // Remove whitespace of arrangement and make lowercase for storing
+    // Remove whitespace of recipe and make lowercase for storing
     value = value.replace(/\s/g, "").toLowerCase();
 
     // Round up quantity
@@ -50,14 +50,14 @@ export const ArrangementModal = ({
     setIngredients(ingredientList);
   };
 
-  const handleAddArrangement = async () => {
-    // Remove whitespace of arrangement and make lowercase for storing
+  const handleAddRecipe = async () => {
+    // Remove whitespace of recipe and make lowercase for storing
     let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
 
-    // Check if an arrangement already exists
+    // Check if an recipe already exists
 
     if (!name) {
-      alert("Arrangement must have a name.");
+      alert("Recipe must have a name.");
       return;
     }
 
@@ -68,9 +68,7 @@ export const ArrangementModal = ({
 
     // Make sure at least 1 ingredient has been added
     if (ingredientList.length === 0) {
-      alert(
-        "Arrangement must have at least valid 1 ingredient with quantity > 0."
-      );
+      alert("Recipe must have at least valid 1 ingredient with quantity > 0.");
       return;
     }
 
@@ -92,17 +90,14 @@ export const ArrangementModal = ({
 
     // Handle alert where name one field is blank and the other is not
 
-    // Assemble arrangement
-    const arrangement: Arrangement = {
+    // Assemble recipe
+    const recipe: Recipe = {
       name,
       ingredients: ingredientList,
     };
 
-    localStorage.setItem(
-      "arrangements",
-      JSON.stringify([...arrangements, arrangement])
-    );
-    setArrangements([...arrangements, arrangement]);
+    localStorage.setItem("recipes", JSON.stringify([...recipes, recipe]));
+    setRecipes([...recipes, recipe]);
     // set loading
     // save to db
     // end loading
@@ -132,7 +127,7 @@ export const ArrangementModal = ({
           </label>
         </div>
         {ingredients.map((_, index) => (
-          <ArrangementRow
+          <RecipeRow
             key={index}
             index={index}
             handleInputChange={handleInputChange}
@@ -156,7 +151,7 @@ export const ArrangementModal = ({
           </button>
           <button
             className="btn hover:bg-green-600 glass w-1/5 bg-green-600 text-white"
-            onClick={handleAddArrangement}
+            onClick={handleAddRecipe}
           >
             Add Recipe
           </button>

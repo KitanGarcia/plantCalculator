@@ -1,4 +1,4 @@
-export type Arrangement = {
+export type Recipe = {
   name: string;
   ingredients: Ingredient[];
 };

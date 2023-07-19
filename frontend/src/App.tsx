@@ -1,55 +1,55 @@
 import { useEffect, useState } from "react";
 
 import "./App.css";
-import { ArrangementDisplay } from "./components/ArrangementDisplay";
-import { ArrangementModal } from "./components/ArrangementModal";
-import { OrderModal } from "./components/OrderModal";
+import { RecipeDisplay } from "./components/RecipeDisplay";
+import { RecipeModal } from "./components/RecipeModal";
+import { OrderModal } from "./components/FlowerOrderModal";
 import { ShoppingListDisplay } from "./components/ShoppingListDisplay";
-import { Arrangement } from "./types/Arrangement";
-import { PlantOrders } from "./types/PlantOrder";
+import { Recipe } from "./types/Recipe";
+import { FlowerOrders } from "./types/FlowerOrder";
 import { ShoppingList, ShoppingListItem } from "./types/ShoppingListItem";
 
 function App() {
   const [showOrderModal, setShowOrderModal] = useState(false);
-  const [showArrangementModal, setShowArrangementModal] = useState(false);
-  const [plantOrders, setPlantOrders] = useState<PlantOrders>({});
-  const [arrangements, setArrangements] = useState<Array<Arrangement>>([]);
+  const [showRecipeModal, setShowRecipeModal] = useState(false);
+  const [flowerOrders, setFlowerOrders] = useState<FlowerOrders>({});
+  const [recipes, setRecipes] = useState<Array<Recipe>>([]);
   const [shoppingList, setShoppingList] = useState<ShoppingList>({});
-  console.log("plant orders", plantOrders);
-  console.log("arrangements", arrangements);
+  console.log("floral orders", flowerOrders);
+  console.log("recipes", recipes);
 
-  // Fetches saved arrangements and plant orders
+  // Fetches saved recipes and plant orders
   useEffect(() => {
-    const savedArrangementsJson = localStorage.getItem("arrangements");
-    let savedArrangements: Arrangement[] = [];
+    const savedRecipesJson = localStorage.getItem("recipes");
+    let savedRecipes: Recipe[] = [];
 
-    const savedPlantOrdersJson = localStorage.getItem("plantOrders");
-    let savedPlantOrders: PlantOrders = {};
+    const savedFlowerOrdersJson = localStorage.getItem("flowerOrders");
+    let savedFlowerOrders: FlowerOrders = {};
 
-    // Fetch saved Arrangements
-    if (savedArrangementsJson) {
+    // Fetch saved Recipes
+    if (savedRecipesJson) {
       try {
-        savedArrangements = JSON.parse(savedArrangementsJson) as Arrangement[];
-        setArrangements(savedArrangements);
+        savedRecipes = JSON.parse(savedRecipesJson) as Recipe[];
+        setRecipes(savedRecipes);
       } catch (error) {
-        console.error("Error parsing saved arrangements:", error);
+        console.error("Error parsing saved recipes:", error);
       }
     }
-    if (savedArrangements) {
-      setArrangements(savedArrangements);
+    if (savedRecipes) {
+      setRecipes(savedRecipes);
     }
 
     // Fetch saved Plant Orders
-    if (savedPlantOrdersJson) {
+    if (savedFlowerOrdersJson) {
       try {
-        savedPlantOrders = JSON.parse(savedPlantOrdersJson) as PlantOrders;
-        setPlantOrders(savedPlantOrders);
+        savedFlowerOrders = JSON.parse(savedFlowerOrdersJson) as FlowerOrders;
+        setFlowerOrders(savedFlowerOrders);
       } catch (error) {
         console.error("Error parsing saved plant orders:", error);
       }
     }
-    if (savedPlantOrders) {
-      setPlantOrders(savedPlantOrders);
+    if (savedFlowerOrders) {
+      setFlowerOrders(savedFlowerOrders);
     }
   }, []);
 
@@ -57,27 +57,27 @@ function App() {
     setShowOrderModal(false);
   };
 
-  const closeArrangementModal = () => {
-    setShowArrangementModal(false);
+  const closeRecipeModal = () => {
+    setShowRecipeModal(false);
   };
 
   const calculate = () => {
     console.log("Called calculate");
-    if (!arrangements) {
-      alert("There are no arrangements defined");
+    if (!recipes) {
+      alert("There are no recipes defined");
       return;
     }
 
     let missingPlantsAlert =
-      "The following plants included in arrangements have not been defined in a plant order:";
+      "The following plants included in recipes have not been defined in a plant order:";
     let missingPlants = false;
 
     let newShoppingList = {} as ShoppingList;
 
-    for (let arrangement of arrangements) {
-      for (let ingredient of arrangement.ingredients) {
-        // Check if all arrangement ingredients are in PlantOrders
-        if (!plantOrders[ingredient.name]) {
+    for (let recipe of recipes) {
+      for (let ingredient of recipe.ingredients) {
+        // Check if all recipe ingredients are in FlowerOrders
+        if (!flowerOrders[ingredient.name]) {
           missingPlants = true;
           missingPlantsAlert += ` ${ingredient.name},`;
         }
@@ -88,9 +88,10 @@ function App() {
           if (!newShoppingList[ingredient.name]) {
             let newItem = {} as ShoppingListItem;
             newItem.quantity = 0;
-            newItem.unitsToOrder = 0;
-            newItem.plantsPerUnit = plantOrders[ingredient.name].plantsPerUnit;
-            newItem.pricePerUnit = plantOrders[ingredient.name].pricePerUnit;
+            newItem.bunchesToOrder = 0;
+            newItem.flowersPerBunch =
+              flowerOrders[ingredient.name].flowersPerBunch;
+            newItem.pricePerBunch = flowerOrders[ingredient.name].pricePerBunch;
             newShoppingList[ingredient.name] = newItem;
           }
 
@@ -99,14 +100,15 @@ function App() {
             ingredient.quantity
           );
           let quantity = newShoppingList[ingredient.name].quantity;
-          let plantsPerUnit = newShoppingList[ingredient.name].plantsPerUnit;
+          let flowersPerBunch =
+            newShoppingList[ingredient.name].flowersPerBunch;
 
           // Calculate how many units to order and total cost
-          let unitsToOrder = Math.ceil(quantity / plantsPerUnit);
+          let bunchesToOrder = Math.ceil(quantity / flowersPerBunch);
           let totalCost =
-            unitsToOrder * newShoppingList[ingredient.name].pricePerUnit;
+            bunchesToOrder * newShoppingList[ingredient.name].pricePerBunch;
 
-          newShoppingList[ingredient.name].unitsToOrder = unitsToOrder;
+          newShoppingList[ingredient.name].bunchesToOrder = bunchesToOrder;
           newShoppingList[ingredient.name].totalCost = totalCost;
         }
       }
@@ -126,7 +128,7 @@ function App() {
 
   return (
     <div className="App flex w-full flex-col">
-      <h1 className="text-5xl my-12">Plant Calculator</h1>
+      <h1 className="text-5xl my-12">Floral Shopping List Calculator</h1>
 
       <button
         className="btn glass bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto"
@@ -137,7 +139,7 @@ function App() {
 
       <button
         className="btn glass mt-8 bg-pink-500 hover:bg-pink-500 text-white w-1/3 align-center m-auto"
-        onClick={() => setShowArrangementModal(!showArrangementModal)}
+        onClick={() => setShowRecipeModal(!showRecipeModal)}
       >
         Define Floral Recipe
       </button>
@@ -145,19 +147,19 @@ function App() {
       {showOrderModal && (
         <OrderModal
           closeModal={closeOrderModal}
-          plantOrders={plantOrders}
-          setPlantOrders={setPlantOrders}
+          flowerOrders={flowerOrders}
+          setFlowerOrders={setFlowerOrders}
         />
       )}
-      {showArrangementModal && (
-        <ArrangementModal
-          closeModal={closeArrangementModal}
-          arrangements={arrangements}
-          setArrangements={setArrangements}
+      {showRecipeModal && (
+        <RecipeModal
+          closeModal={closeRecipeModal}
+          recipes={recipes}
+          setRecipes={setRecipes}
         />
       )}
-      {arrangements.length > 0 && (
-        <ArrangementDisplay arrangements={arrangements} calculate={calculate} />
+      {recipes.length > 0 && (
+        <RecipeDisplay recipes={recipes} calculate={calculate} />
       )}
       {shoppingList && <ShoppingListDisplay list={shoppingList} />}
     </div>
