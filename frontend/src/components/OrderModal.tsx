@@ -60,6 +60,7 @@ export const OrderModal = ({
 
     const updatedOrders = { ...plantOrders };
     updatedOrders[name] = newPlantOrder;
+    localStorage.setItem("plantOrders", JSON.stringify(updatedOrders));
     setPlantOrders(updatedOrders);
 
     // set loading

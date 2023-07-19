@@ -18,10 +18,15 @@ function App() {
   console.log("plant orders", plantOrders);
   console.log("arrangements", arrangements);
 
+  // Fetches saved arrangements and plant orders
   useEffect(() => {
     const savedArrangementsJson = localStorage.getItem("arrangements");
     let savedArrangements: Arrangement[] = [];
 
+    const savedPlantOrdersJson = localStorage.getItem("plantOrders");
+    let savedPlantOrders: PlantOrders = {};
+
+    // Fetch saved Arrangements
     if (savedArrangementsJson) {
       try {
         savedArrangements = JSON.parse(savedArrangementsJson) as Arrangement[];
@@ -32,6 +37,19 @@ function App() {
     }
     if (savedArrangements) {
       setArrangements(savedArrangements);
+    }
+
+    // Fetch saved Plant Orders
+    if (savedPlantOrdersJson) {
+      try {
+        savedPlantOrders = JSON.parse(savedPlantOrdersJson) as PlantOrders;
+        setPlantOrders(savedPlantOrders);
+      } catch (error) {
+        console.error("Error parsing saved plant orders:", error);
+      }
+    }
+    if (savedPlantOrders) {
+      setPlantOrders(savedPlantOrders);
     }
   }, []);
 
