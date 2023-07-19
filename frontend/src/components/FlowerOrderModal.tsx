@@ -1,20 +1,19 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { PlantOrder } from "../types/PlantOrder";
+import { FlowerOrder, FlowerOrders } from "../types/FlowerOrder";
 
 interface OrderModalProps {
   closeModal: () => void;
-  plantOrderDetails: Array<PlantOrder>;
-  setPlantOrderDetails: Dispatch<SetStateAction<PlantOrder[]>>;
+  flowerOrders: FlowerOrders;
+  setFlowerOrders: Dispatch<SetStateAction<FlowerOrders>>;
 }
 
 export const OrderModal = ({
   closeModal,
-  plantOrderDetails,
-  setPlantOrderDetails,
+  flowerOrders,
+  setFlowerOrders,
 }: OrderModalProps) => {
   const nameRef = useRef<HTMLInputElement>(null);
-  const plantsRef = useRef<HTMLInputElement>(null);
-  const unitsRef = useRef<HTMLInputElement>(null);
+  const flowerRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
 
   // Focus on name when modal opens
@@ -27,45 +26,42 @@ export const OrderModal = ({
   const handleAddPlant = async () => {
     // Remove whitespace of plant and make lowercase for storing
     let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
-    let plantsPerUnit = Number(plantsRef!.current!.value);
-    let numberOfUnits = Number(unitsRef!.current!.value);
-    let pricePerUnit = Number(priceRef!.current!.value);
+    let flowersPerBunch = Number(flowerRef!.current!.value);
+    let pricePerBunch = Number(priceRef!.current!.value);
 
     // Need to check if order already exists!
 
     // Check if all fields are filled out correctly
 
-    if (!name || !plantsPerUnit || !numberOfUnits || !pricePerUnit) {
+    if (!name || !flowersPerBunch || !pricePerBunch) {
       alert(
-        "Please enter all fields. Plants per Unit, Number of Units, and Price per Unit must be numbers."
+        "Please enter all fields. Flowers per Bunch and Price per Bunch must be numbers."
       );
       return;
     }
 
-    if (plantsPerUnit <= 0 || numberOfUnits <= 0 || pricePerUnit <= 0) {
-      alert(
-        "Plants per Unit, Number of Units, and Price per Unit must be greater than 0."
-      );
+    if (flowersPerBunch <= 0 || pricePerBunch <= 0) {
+      alert("Flowers per Bunch and Price per Bunch must be greater than 0.");
       return;
     }
 
-    if (!Number.isInteger(plantsPerUnit) || !Number.isInteger(numberOfUnits)) {
-      alert("Plants per Unit and Number of Units must be whole numbers.");
+    if (!Number.isInteger(flowersPerBunch)) {
+      alert("Flowers per Bunch must be a whole number.");
       return;
     }
 
     // Round price
-    pricePerUnit = Number(pricePerUnit.toFixed(2));
+    pricePerBunch = Number(pricePerBunch.toFixed(2));
 
-    const newPlantOrder = {
-      name: name,
-      plantsPerUnit,
-      numberOfUnits,
-      pricePerUnit,
+    const newFlowerOrder: FlowerOrder = {
+      flowersPerBunch,
+      pricePerBunch,
     };
 
-    const updatedOrderDetails = [...plantOrderDetails, newPlantOrder];
-    setPlantOrderDetails(updatedOrderDetails);
+    const updatedOrders = { ...flowerOrders };
+    updatedOrders[name] = newFlowerOrder;
+    localStorage.setItem("flowerOrders", JSON.stringify(updatedOrders));
+    setFlowerOrders(updatedOrders);
 
     // set loading
     // save to db
@@ -78,49 +74,35 @@ export const OrderModal = ({
       <div className="w-[36rem] m-auto mt-8 menu rounded-box glass hover:bg-pink-500 bg-pink-500">
         <div className="form-control mt-4 mb-4 m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Name of Plant</span>
+            <span className="label-text text-white">Name of Flower</span>
           </label>
           <label className="input-group">
             <span>Name</span>
             <input
               type="text"
               ref={nameRef}
-              placeholder="ie. Red Roses"
+              placeholder="ie. Red Rose"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
           </label>
         </div>
         <div className="form-control mb-4 m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Plants per Unit</span>
+            <span className="label-text text-white">Flowers per Bunch</span>
           </label>
           <label className="input-group">
-            <span>Plants</span>
+            <span>Stems</span>
             <input
               type="text"
-              ref={plantsRef}
+              ref={flowerRef}
               placeholder="ie. 12"
-              className="input input-bordered focus:outline-none focus:border-blue-400"
-            />
-          </label>
-        </div>
-        <div className="form-control mb-4 m-auto text-center">
-          <label className="label">
-            <span className="label-text text-white">Number of Units</span>
-          </label>
-          <label className="input-group">
-            <span>Units</span>
-            <input
-              type="text"
-              ref={unitsRef}
-              placeholder="ie. 1"
               className="input input-bordered focus:outline-none focus:border-blue-400"
             />
           </label>
         </div>
         <div className="form-control m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Price per Unit ($)</span>
+            <span className="label-text text-white">Price per Bunch ($)</span>
           </label>
           <label className="input-group">
             <span>Price</span>
@@ -143,7 +125,7 @@ export const OrderModal = ({
             className="btn hover:bg-green-600 glass w-1/5 bg-green-600 text-white"
             onClick={handleAddPlant}
           >
-            Add Plant
+            Add Flower
           </button>
         </div>
       </div>

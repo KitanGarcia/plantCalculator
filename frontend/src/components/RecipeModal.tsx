@@ -1,21 +1,21 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Arrangement, Ingredient } from "../types/Arrangement";
-import { ArrangementRow } from "./ArrangementRow";
+import { Recipe, Ingredient } from "../types/Recipe";
+import { RecipeRow } from "./RecipeRow";
 
-interface ArrangementModalProps {
+interface RecipeModalProps {
   closeModal: () => void;
-  arrangements: Arrangement[];
-  setArrangements: Dispatch<SetStateAction<Arrangement[]>>;
+  recipes: Recipe[];
+  setRecipes: Dispatch<SetStateAction<Recipe[]>>;
 }
 
-export const ArrangementModal = ({
+export const RecipeModal = ({
   closeModal,
-  arrangements,
-  setArrangements,
-}: ArrangementModalProps) => {
+  recipes,
+  setRecipes,
+}: RecipeModalProps) => {
   const [ingredients, setIngredients] = useState<Array<Ingredient>>([
     {
-      plant: "",
+      name: "",
       quantity: 0,
     },
   ]);
@@ -35,7 +35,7 @@ export const ArrangementModal = ({
     const ingredientList: Ingredient[] = [...ingredients];
     let { name, value } = event.target;
 
-    // Remove whitespace of arrangement and make lowercase for storing
+    // Remove whitespace of recipe and make lowercase for storing
     value = value.replace(/\s/g, "").toLowerCase();
 
     // Round up quantity
@@ -50,37 +50,35 @@ export const ArrangementModal = ({
     setIngredients(ingredientList);
   };
 
-  const handleAddArrangement = async () => {
-    // Remove whitespace of arrangement and make lowercase for storing
+  const handleAddRecipe = async () => {
+    // Remove whitespace of recipe and make lowercase for storing
     let name = nameRef!.current!.value.replace(/\s/g, "").toLowerCase();
 
-    // Check if an arrangement already exists
+    // Check if an recipe already exists
 
     if (!name) {
-      alert("Arrangement must have a name.");
+      alert("Recipe must have a name.");
       return;
     }
 
     const ingredientList = [...ingredients].filter(
       (ingredient) =>
-        ingredient.plant && ingredient.quantity && ingredient.quantity > 0
+        ingredient.name && ingredient.quantity && ingredient.quantity > 0
     );
 
     // Make sure at least 1 ingredient has been added
     if (ingredientList.length === 0) {
-      alert(
-        "Arrangement must have at least valid 1 ingredient with quantity > 0."
-      );
+      alert("Recipe must have at least valid 1 ingredient with quantity > 0.");
       return;
     }
 
     const hasDuplicate = () => {
       let plantNames = new Set();
       for (let ingredient of ingredientList) {
-        if (plantNames.has(ingredient.plant)) {
+        if (plantNames.has(ingredient.name)) {
           return true;
         }
-        plantNames.add(ingredient.plant);
+        plantNames.add(ingredient.name);
       }
     };
 
@@ -92,13 +90,14 @@ export const ArrangementModal = ({
 
     // Handle alert where name one field is blank and the other is not
 
-    // Assemble arrangement
-    const arrangement: Arrangement = {
+    // Assemble recipe
+    const recipe: Recipe = {
       name,
       ingredients: ingredientList,
     };
 
-    setArrangements([...arrangements, arrangement]);
+    localStorage.setItem("recipes", JSON.stringify([...recipes, recipe]));
+    setRecipes([...recipes, recipe]);
     // set loading
     // save to db
     // end loading
@@ -107,7 +106,7 @@ export const ArrangementModal = ({
 
   // Create new row
   const handleAddRow = () => {
-    setIngredients([...ingredients, { plant: "", quantity: 0 }]);
+    setIngredients([...ingredients, { name: "", quantity: 0 }]);
   };
 
   return (
@@ -115,7 +114,7 @@ export const ArrangementModal = ({
       <div className="w-[36rem] m-auto mt-8 menu rounded-box glass hover:bg-pink-500 bg-pink-500">
         <div className="form-control mt-4 mb-4 m-auto text-center">
           <label className="label">
-            <span className="label-text text-white">Name of Arrangement</span>
+            <span className="label-text text-white">Name of Recipe</span>
           </label>
           <label className="input-group">
             <span>Name</span>
@@ -128,7 +127,11 @@ export const ArrangementModal = ({
           </label>
         </div>
         {ingredients.map((_, index) => (
-          <ArrangementRow index={index} handleInputChange={handleInputChange} />
+          <RecipeRow
+            key={index}
+            index={index}
+            handleInputChange={handleInputChange}
+          />
         ))}
 
         <div>
@@ -148,9 +151,9 @@ export const ArrangementModal = ({
           </button>
           <button
             className="btn hover:bg-green-600 glass w-1/5 bg-green-600 text-white"
-            onClick={handleAddArrangement}
+            onClick={handleAddRecipe}
           >
-            Add Arrangement
+            Add Recipe
           </button>
         </div>
       </div>

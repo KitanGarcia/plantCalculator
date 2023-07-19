@@ -1,9 +1,9 @@
-export type Arrangement = {
+export type Recipe = {
   name: string;
   ingredients: Ingredient[];
 };
 
 export type Ingredient = {
-  plant: string;
+  name: string;
   quantity: number;
 };
